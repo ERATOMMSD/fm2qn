@@ -1,1 +1,1 @@
-# fm2qn
+# FM2QN: Feature models to queueing networks

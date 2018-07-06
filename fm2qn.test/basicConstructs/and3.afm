@@ -1,0 +1,3 @@
+%Relationships
+A : B [C] D [E] [F];
+F: G [H];

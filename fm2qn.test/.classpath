@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="test_src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/fm2qn"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="/fm2qn.extlibs/FaMaAttributedModel-1.0.4.jar"/>
+	<classpathentry kind="lib" path="/fm2qn.extlibs/FaMaFeatureModel-0.9.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/fm2qn.exp"/>
+	<classpathentry kind="lib" path="/fm2qn.extlibs/JMT.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

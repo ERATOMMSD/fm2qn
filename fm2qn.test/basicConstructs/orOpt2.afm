@@ -1,0 +1,2 @@
+%Relationships
+A : B [1,2] {C D} [1,2] {E F};

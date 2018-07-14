@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="/fm2qn.extlibs/JMT.jar"/>
 	<classpathentry kind="lib" path="/fm2qn.extlibs/choco-2.1.0-basic+old.jar"/>
 	<classpathentry kind="lib" path="/fm2qn.extlibs/args4j.jar"/>
+	<classpathentry kind="lib" path="/fm2qn.extlibs/antlr.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

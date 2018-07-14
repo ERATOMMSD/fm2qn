@@ -61,13 +61,13 @@ public class FM2QNcli {
 			// you'll get this exception. this will report
 			// an error message.
 			System.err.println(e.getMessage());
-			System.err.println("java FM2QN [options...] fileName");
+			System.err.println("java -jar FM2QN.jar [options...] fileName");
 			// print the list of available options
 			parser.printUsage(System.err);
 			System.err.println();
 
 			// print option sample. This is useful some time
-			System.err.println("  Example: java FM2QN" + parser.printExample(ALL));
+			System.err.println("  Example: java -jar FM2QN.jar " + parser.printExample(ALL));
 
 			return;
 		}

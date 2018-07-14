@@ -86,7 +86,7 @@ public class QueueNetwork {
 		ArrayList<QNelement> elements = new ArrayList<QNelement>();
 		elements.add(el);
 		QNelement father = null;
-		while ((father = el.getFather()) != null) {
+		while ((el !=null)  && ((father = el.getFather()) != null)) {
 			/*
 			 * if (father instanceof Router) { elements.add(father); } else if (father
 			 * instanceof Fork) { elements.add(el); //assert el instanceof

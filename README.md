@@ -1,7 +1,7 @@
 # FM2QN: Feature models to queueing networks
 
 ## Benchmarks
-A set of 6003 feature models have been generated with BeTTy. It can be dowloaded from [here](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/benchmarks.zip)
+A set of 6003 feature models have been generated with the [BeTTy](http://www.isa.us.es/fama/?BeTTy_Framework) tool. It can be dowloaded from [here](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/benchmarks.zip)
 
 ## Results
 The benchmark feature models have been translated assuming both a parallel and sequential semantics:
@@ -19,4 +19,7 @@ java -jar FM2QN.jar [options...] fileName
  -min         : generate network for minumum product (default: false)
  -seq         : use sequential semantics (default: false)
 
-  Example: java FM2QN -attName VAL -max -min -seq
+  Example: java -jar FM2QN.jar -attName VAL -max -min -seq
+```
+
+The generated queueing networks can be simulated with the [JMT tool](http://jmt.sourceforge.net/)

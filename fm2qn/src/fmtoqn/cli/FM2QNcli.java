@@ -61,6 +61,7 @@ public class FM2QNcli {
 		BuildQNfromFM b = new BuildQNfromFM(fileName);
 		b.buildQN();
 		QueueNetwork qn = b.getQn();
+		qn.printConstraints();
 		String semantics = (BuildQNfromFM.parSemantics ? "_parSem" : "_seqSem");
 		if (maxProd) {
 			if (attributeName == null) {

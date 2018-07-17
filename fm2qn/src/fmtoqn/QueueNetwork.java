@@ -218,6 +218,8 @@ public class QueueNetwork {
 			List<QNelement> children = o.getChildren();
 			assert children.size() == 2;
 			System.out.println(o.getChildName(children.get(0)) + " + " + o.getChildName(children.get(1)) + " = 1");
+			System.out.println(o.getChildName(children.get(0)) + " in {0, 1}");
+			System.out.println(o.getChildName(children.get(1)) + " in {0, 1}");
 		}
 		for (Queue or : ors.keySet()) {
 			List<String> operands = new ArrayList<String>();
@@ -229,6 +231,9 @@ public class QueueNetwork {
 				System.out.print(operands.get(i) + " + ");
 			}
 			System.out.println(operands.get(operands.size() - 1) + " >= 1");
+			for (int i = 0; i < operands.size(); i++) {
+				System.out.println(operands.get(i) + " indsd {0, 1}");
+			}
 		}
 		for (QNelement alt : alternatives.keySet()) {
 			List<String> operands = new ArrayList<String>();
@@ -279,7 +284,12 @@ public class QueueNetwork {
 				i++;
 				assert i < list.size();
 				QNelement child = list.get(i);
-				newList.add(((Fork) q).getChildName(child));
+				if (q instanceof Router) {
+					newList.add(((Router) q).getChildName(child));
+				}
+				else {
+					newList.add(((Fork) q).getChildName(child));
+				}
 			}
 		}
 		return newList;

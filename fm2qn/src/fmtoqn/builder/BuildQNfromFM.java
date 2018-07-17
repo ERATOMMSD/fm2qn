@@ -44,6 +44,7 @@ public class BuildQNfromFM {
 	private boolean byDefault = true;
 	private Stack<QNelement> openJoins = new Stack<QNelement>();
 	private int counter = 0;
+	private QNelement joiningElementForSeqSemantics;
 	public static boolean parSemantics = true;
 
 	public BuildQNfromFM(String fileName) throws Exception {
@@ -83,8 +84,6 @@ public class BuildQNfromFM {
 			}
 		}
 	}
-
-	QNelement joiningElementForSeqSemantics;
 
 	public QNelement visit(AttributedFeature f, QNelement father) {
 		Collection<GenericAttribute> attributes = f.getAttributes();

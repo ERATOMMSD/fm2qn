@@ -25,6 +25,7 @@ import es.us.isa.FAMA.models.featureModel.Cardinality;
 import es.us.isa.FAMA.models.featureModel.Constraint;
 import es.us.isa.FAMA.models.featureModel.extended.GenericAttribute;
 import fmtoqn.Fork;
+import fmtoqn.ForkForAnd;
 import fmtoqn.Join;
 import fmtoqn.QNelement;
 import fmtoqn.Queue;
@@ -220,9 +221,10 @@ public class BuildQNfromFM {
 	private void buildAndParSemantics(Queue father, List<AttributedFeature> andGroupOpt,
 			List<AttributedFeature> andGroupMand, List<List<AttributedFeature>> andGroupOr,
 			List<List<AttributedFeature>> andGroupAlt) {
-		if (andGroupOpt.size() + andGroupMand.size() + andGroupOr.size() + andGroupAlt.size() > 1) {
+		int nnumChildrenInFM = andGroupOpt.size() + andGroupMand.size() + andGroupOr.size() + andGroupAlt.size();
+		if (nnumChildrenInFM > 1) {
 			counter++;
-			Fork fork = new Fork(father.getName() + "_AND" + counter + "_fork", father);
+			ForkForAnd fork = new ForkForAnd(father.getName() + "_AND" + counter + "_fork", father);
 			Join join = new Join(father.getName() + "_AND" + counter + "_join", fork);
 			fork.setJoin(join);
 			father.addChild(fork);
@@ -236,11 +238,12 @@ public class BuildQNfromFM {
 				fork.addChild(buildMandatory(fork, child), true);
 			}
 			for (List<AttributedFeature> children : andGroupOr) {
-				fork.addChild(buildOr(fork, children, parSemantics));
+				fork.addChild(buildOr(fork, children, parSemantics), true);
 			}
 			for (List<AttributedFeature> children : andGroupAlt) {
 				fork.addChild(buildAlternative(fork, children), true);
 			}
+			assert fork.getSelectedChildren().size() == nnumChildrenInFM: "forkSelectedChildren: " + fork.getSelectedChildren().size() + "\nforkChildren: " + fork.getChildren().size() + "\nnumChildrenInFM:" + nnumChildrenInFM;
 			openJoins.pop();
 		} else {
 			if (andGroupOpt.size() == 1) {
@@ -327,7 +330,8 @@ public class BuildQNfromFM {
 		Fork fork = new Fork(father.getName() + "_OR" + counter, father);
 		Join join = new Join(father.getName() + "_OR" + counter + "_join", fork);
 		fork.setJoin(join);
-		father.addChild(fork);
+		//father.addChild(fork);//this should be not necessary as done in the calling
+		// method.
 		qn.addNode(fork);
 		qn.addNode(join);
 		openJoins.push(join);

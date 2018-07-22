@@ -3,6 +3,8 @@ package fmtoqn.cli;
 import static org.kohsuke.args4j.ExampleMode.ALL;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
@@ -57,11 +59,15 @@ public class FM2QNcli {
 		if (!new File(fileName).exists()) {
 			throw new CmdLineException("File " + fileName + " does not exist!");
 		}
+		
+		if(!fileName.endsWith(".afm")) {
+			throw new CmdLineException("Unsopported format of " + fileName + "\nFile extension must be afm");
+		}
 
 		BuildQNfromFM b = new BuildQNfromFM(fileName);
 		b.buildQN();
 		QueueNetwork qn = b.getQn();
-		qn.printConstraints();
+		qn.printConstraints(new PrintStream(new FileOutputStream(new File(fileName.substring(0, fileName.length() - 4) + "_constr.txt"))));
 		String semantics = (BuildQNfromFM.parSemantics ? "_parSem" : "_seqSem");
 		if (maxProd) {
 			if (attributeName == null) {

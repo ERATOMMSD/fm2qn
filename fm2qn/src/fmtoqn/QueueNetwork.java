@@ -1,6 +1,7 @@
 package fmtoqn;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -133,8 +134,7 @@ public class QueueNetwork {
 			}
 			selectedChildren.add(child);
 			setProductInQN(child, product);
-			
-			
+
 			if (selectedChildren.size() == 0) {
 				throw new Error("Exactly one child must be selected!");
 			}
@@ -162,7 +162,7 @@ public class QueueNetwork {
 			f.getSelectedChildren().clear();
 			for (QNelement child : f.getChildren()) {
 				String childName = child.getName();
-				if (child instanceof Router || product.containsFeature(childName)) {
+				if (child instanceof Router || element instanceof ForkForAnd || product.containsFeature(childName)) {
 					f.getSelectedChildren().add(child);
 					setProductInQN(child, product);
 				}
@@ -212,14 +212,18 @@ public class QueueNetwork {
 		sb.append("</sim>\n</archive>");
 		return sb.toString();
 	}
-
+	
 	public void printConstraints() {
+		printConstraints(System.out);
+	}
+
+	public void printConstraints(PrintStream ps) {
 		for (Router o : optionals) {
 			List<QNelement> children = o.getChildren();
 			assert children.size() == 2;
-			System.out.println(o.getChildName(children.get(0)) + " + " + o.getChildName(children.get(1)) + " = 1");
-			System.out.println(o.getChildName(children.get(0)) + " in {0, 1}");
-			System.out.println(o.getChildName(children.get(1)) + " in {0, 1}");
+			ps.println(o.getChildName(children.get(0)) + " + " + o.getChildName(children.get(1)) + " = 1");
+			ps.println(o.getChildName(children.get(0)) + " in {0, 1}");
+			ps.println(o.getChildName(children.get(1)) + " in {0, 1}");
 		}
 		for (Queue or : ors.keySet()) {
 			List<String> operands = new ArrayList<String>();
@@ -228,11 +232,11 @@ public class QueueNetwork {
 				operands.add(fork.getChildName(g));
 			}
 			for (int i = 0; i < operands.size() - 1; i++) {
-				System.out.print(operands.get(i) + " + ");
+				ps.print(operands.get(i) + " + ");
 			}
-			System.out.println(operands.get(operands.size() - 1) + " >= 1");
+			ps.println(operands.get(operands.size() - 1) + " >= 1");
 			for (int i = 0; i < operands.size(); i++) {
-				System.out.println(operands.get(i) + " indsd {0, 1}");
+				ps.println(operands.get(i) + " indsd {0, 1}");
 			}
 		}
 		for (QNelement alt : alternatives.keySet()) {
@@ -242,37 +246,37 @@ public class QueueNetwork {
 				operands.add(router.getChildName(g));
 			}
 			for (int i = 0; i < operands.size() - 1; i++) {
-				System.out.print(operands.get(i) + " + ");
+				ps.print(operands.get(i) + " + ");
 			}
-			System.out.println(operands.get(operands.size() - 1) + " = 1");
+			ps.println(operands.get(operands.size() - 1) + " = 1");
 		}
 		for (ArrayList<QNelement>[] require : requires) {
 			ArrayList<String> list = filter(require[0]);
 
-			System.out.print("(" + list.get(0));
+			ps.print("(" + list.get(0));
 			for (int i = 1; i < list.size(); i++) {
-				System.out.print(" & " + list.get(i));
+				ps.print(" & " + list.get(i));
 			}
 			list = filter(require[1]);
-			System.out.print(") -> (" + list.get(0));
+			ps.print(") -> (" + list.get(0));
 			for (int i = 1; i < list.size(); i++) {
-				System.out.print(" & " + list.get(i));
+				ps.print(" & " + list.get(i));
 			}
-			System.out.println(")");
+			ps.println(")");
 		}
 		for (ArrayList<QNelement>[] exclude : excludes) {
 			ArrayList<String> list = filter(exclude[0]);
 
-			System.out.print("(" + list.get(0));
+			ps.print("(" + list.get(0));
 			for (int i = 1; i < list.size(); i++) {
-				System.out.print(" & " + list.get(i));
+				ps.print(" & " + list.get(i));
 			}
 			list = filter(exclude[1]);
-			System.out.print(") -> !(" + list.get(0));
+			ps.print(") -> !(" + list.get(0));
 			for (int i = 1; i < list.size(); i++) {
-				System.out.print(" & " + list.get(i));
+				ps.print(" & " + list.get(i));
 			}
-			System.out.println(")");
+			ps.println(")");
 		}
 	}
 

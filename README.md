@@ -1,7 +1,7 @@
 # FM2QN: Feature models to queueing networks
 
 ## Benchmarks
-A set of 6003 feature models have been generated with the [BeTTy](http://www.isa.us.es/fama/?BeTTy_Framework) tool. It can be dowloaded from [here](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/benchmarks.zip)
+A set of 6003 feature models have been generated with the [BeTTy](http://www.isa.us.es/fama/?BeTTy_Framework) tool. The generated benchmark set can be dowloaded from [here](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/benchmarks.zip)
 
 ## Results
 The benchmark feature models have been translated assuming both a parallel and sequential semantics:
@@ -23,3 +23,9 @@ java -jar FM2QN.jar [options...] fileName
 ```
 
 The generated queueing networks can be simulated with the [JMT tool](http://jmt.sourceforge.net/)
+
+
+## Contacts
+For any question about the project, please contact the authors:
+[Paolo Arcaini](http://group-mmm.org/~arcaini/), National Institute of Informatics
+[Catia Trubiani](http://cs.gssi.infn.it/catia.trubiani/), Gran Sasso Science Institute

@@ -31,16 +31,16 @@ public class AttributedProduct extends Product implements Comparable<AttributedP
 	private boolean isValidProduct = true;
 
 	public AttributedProduct() {
-		attrValues = new HashMap<String, Map<GenericFeature, Double>>();
+		setAttrValues(new HashMap<String, Map<GenericFeature, Double>>());
 		featureName = new HashMap<String, GenericFeature>();
 	}
 
 	public void addFeatureAttributeValue(GenericFeature feature, String attribute, double value) {
-		if (!attrValues.containsKey(attribute)) {
-			attrValues.put(attribute, new HashMap<>());
+		if (!getAttrValues().containsKey(attribute)) {
+			getAttrValues().put(attribute, new HashMap<>());
 		}
-		assert !attrValues.get(attribute).containsKey(feature) : attrValues.get(attribute).get(feature);
-		attrValues.get(attribute).put(feature, value);
+		assert !getAttrValues().get(attribute).containsKey(feature) : getAttrValues().get(attribute).get(feature);
+		getAttrValues().get(attribute).put(feature, value);
 		addFeatureName(feature);
 	}
 
@@ -49,14 +49,14 @@ public class AttributedProduct extends Product implements Comparable<AttributedP
 	}
 
 	public double getValue(GenericFeature feature, String attribute) {
-		return (attrValues.containsKey(attribute) && attrValues.get(attribute).containsKey(feature))
-				? attrValues.get(attribute).get(feature)
+		return (getAttrValues().containsKey(attribute) && getAttrValues().get(attribute).containsKey(feature))
+				? getAttrValues().get(attribute).get(feature)
 				: 0;
 	}
 
 	public double totalValue(String attribute) {
 		double sum = 0;
-		Map<GenericFeature, Double> map = attrValues.get(attribute);
+		Map<GenericFeature, Double> map = getAttrValues().get(attribute);
 		if (map != null) {
 			for (Double i : map.values()) {
 				sum += i;
@@ -70,7 +70,7 @@ public class AttributedProduct extends Product implements Comparable<AttributedP
 	}
 
 	public void filterCosts(int ratio, String attribute) {
-		Map<GenericFeature, Double> attributeMap = attrValues.get(attribute);
+		Map<GenericFeature, Double> attributeMap = getAttrValues().get(attribute);
 		// it could be null if there are no features in the product
 		if (attributeMap != null) {
 			for (GenericFeature feature : attributeMap.keySet()) {
@@ -97,9 +97,9 @@ public class AttributedProduct extends Product implements Comparable<AttributedP
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (String attribute : attrValues.keySet()) {
+		for (String attribute : getAttrValues().keySet()) {
 			sb.append("{").append(attribute).append(" ");
-			Map<GenericFeature, Double> attributeMap = attrValues.get(attribute);
+			Map<GenericFeature, Double> attributeMap = getAttrValues().get(attribute);
 			Iterator<GenericFeature> it = listOfFeatures.iterator();
 			while (it.hasNext()) {
 				GenericFeature feat = it.next();
@@ -124,5 +124,13 @@ public class AttributedProduct extends Product implements Comparable<AttributedP
 		} else {
 			return 1;
 		}
+	}
+
+	public Map<String, Map<GenericFeature, Double>> getAttrValues() {
+		return attrValues;
+	}
+
+	public void setAttrValues(Map<String, Map<GenericFeature, Double>> attrValues) {
+		this.attrValues = attrValues;
 	}
 }

@@ -23,7 +23,7 @@ import fmtoqn.Sink;
 import fmtoqn.Source;
 
 public class SimplifyQueueNetworkFromProduct {
-	private static Logger logger = Logger.getLogger(SimplifyQueueNetworkFromProduct.class.getSimpleName());
+	public static Logger logger = Logger.getLogger(SimplifyQueueNetworkFromProduct.class.getSimpleName());
 	private static String attributeName;
 
 	public static QueueNetwork simplifyOnlyQueues(QueueNetwork qn, AttributedProduct product) {

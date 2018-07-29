@@ -18,6 +18,7 @@ java -jar FM2QN.jar [options...] fileName
  -max         : generate network for maximum product (default: false)
  -min         : generate network for minumum product (default: false)
  -seq         : use sequential semantics (default: false)
+ -slice       : slice the network (default: false)
 
   Example: java -jar FM2QN.jar -attName VAL -max -min -seq
 ```

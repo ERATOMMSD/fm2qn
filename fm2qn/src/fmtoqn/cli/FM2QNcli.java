@@ -14,6 +14,7 @@ import org.kohsuke.args4j.Option;
 import es.us.isa.ChocoReasoner.attributed.AttributedProduct;
 import fmtoqn.QueueNetwork;
 import fmtoqn.builder.BuildQNfromFM;
+import fmtoqn.builder.SimplifyQueueNetworkFromProduct;
 import fmtoqn.products.OptProdExp;
 
 public class FM2QNcli {
@@ -25,6 +26,9 @@ public class FM2QNcli {
 
 	@Option(name = "-min", usage = "generate network for minumum product")
 	private boolean minProd;
+
+	@Option(name = "-slice", usage = "slice the network")
+	private boolean slice;
 
 	@Option(name = "-attName", usage = "attribute name")
 	private String attributeName;
@@ -69,14 +73,22 @@ public class FM2QNcli {
 		QueueNetwork qn = b.getQn();
 		qn.printConstraints(new PrintStream(new FileOutputStream(new File(fileName.substring(0, fileName.length() - 4) + "_constr.txt"))));
 		String semantics = (BuildQNfromFM.parSemantics ? "_parSem" : "_seqSem");
+		SimplifyQueueNetworkFromProduct.logger.setLevel(java.util.logging.Level.SEVERE);
 		if (maxProd) {
 			if (attributeName == null) {
 				throw new CmdLineException("You need to specify an attribute name in order to generate a product!");
 			}
 			AttributedProduct maxProd = OptProdExp.getProduct(attributeName, false, b.fm);
-			b.getQn().setAttributeName(attributeName);
-			b.getQn().setProductInQN(maxProd);
-			b.saveQn(b.getQnName() + semantics + "_maxProd.jsimg");
+			qn.setAttributeName(attributeName);
+			qn.setProductInQN(maxProd);
+			if(slice) {
+				QueueNetwork newQn = SimplifyQueueNetworkFromProduct.simplify(b.getQn(), maxProd);
+				newQn.setProductInQN(maxProd);
+				BuildQNfromFM.saveQn(newQn, b.getQnName() + semantics + "_maxProd_sliced.jsimg");
+			}
+			else {
+				b.saveQn(b.getQnName() + semantics + "_maxProd.jsimg");
+			}
 			System.out.println("Max product: " + maxProd);
 		}
 		if (minProd) {
@@ -84,9 +96,16 @@ public class FM2QNcli {
 				throw new CmdLineException("You need to specify an attribute name in order to generate a product!");
 			}
 			AttributedProduct minProd = OptProdExp.getProduct(attributeName, true, b.fm);
-			b.getQn().setAttributeName(attributeName);
-			b.getQn().setProductInQN(minProd);
-			b.saveQn(b.getQnName() + semantics + "_minProd.jsimg");
+			qn.setAttributeName(attributeName);
+			qn.setProductInQN(minProd);
+			if(slice) {
+				QueueNetwork newQn = SimplifyQueueNetworkFromProduct.simplify(qn, minProd);
+				newQn.setProductInQN(minProd);
+				BuildQNfromFM.saveQn(newQn, b.getQnName() + semantics + "_minProd_sliced.jsimg");
+			}
+			else {
+				b.saveQn(b.getQnName() + semantics + "_minProd.jsimg");
+			}
 			System.out.println("Min product: " + minProd);
 		}
 		if (!minProd && !maxProd) {

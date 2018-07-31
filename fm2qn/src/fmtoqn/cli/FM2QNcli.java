@@ -4,6 +4,7 @@ import static org.kohsuke.args4j.ExampleMode.ALL;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import org.kohsuke.args4j.Argument;
@@ -14,7 +15,7 @@ import org.kohsuke.args4j.Option;
 import es.us.isa.ChocoReasoner.attributed.AttributedProduct;
 import fmtoqn.QueueNetwork;
 import fmtoqn.builder.BuildQNfromFM;
-import fmtoqn.builder.SimplifyQueueNetworkFromProduct;
+import fmtoqn.builder.SimplifyQueueNetwork;
 import fmtoqn.products.OptProdExp;
 
 public class FM2QNcli {
@@ -63,53 +64,46 @@ public class FM2QNcli {
 		if (!new File(fileName).exists()) {
 			throw new CmdLineException("File " + fileName + " does not exist!");
 		}
-		
-		if(!fileName.endsWith(".afm")) {
+
+		if (!fileName.endsWith(".afm")) {
 			throw new CmdLineException("Unsopported format of " + fileName + "\nFile extension must be afm");
 		}
 
 		BuildQNfromFM b = new BuildQNfromFM(fileName);
 		b.buildQN();
-		QueueNetwork qn = b.getQn();
-		qn.printConstraints(new PrintStream(new FileOutputStream(new File(fileName.substring(0, fileName.length() - 4) + "_constr.txt"))));
 		String semantics = (BuildQNfromFM.parSemantics ? "_parSem" : "_seqSem");
-		SimplifyQueueNetworkFromProduct.logger.setLevel(java.util.logging.Level.SEVERE);
+		QueueNetwork qn = b.getQn();
+		String constrFileName = fileName.substring(0, fileName.length() - 4) + semantics + "_constr.txt";
+		qn.printConstraints(new PrintStream(new FileOutputStream(new File(constrFileName))));
+		SimplifyQueueNetwork.logger.setLevel(java.util.logging.Level.SEVERE);
 		if (maxProd) {
-			if (attributeName == null) {
-				throw new CmdLineException("You need to specify an attribute name in order to generate a product!");
-			}
-			AttributedProduct maxProd = OptProdExp.getProduct(attributeName, false, b.fm);
-			qn.setAttributeName(attributeName);
-			qn.setProductInQN(maxProd);
-			if(slice) {
-				QueueNetwork newQn = SimplifyQueueNetworkFromProduct.simplify(b.getQn(), maxProd);
-				newQn.setProductInQN(maxProd);
-				BuildQNfromFM.saveQn(newQn, b.getQnName() + semantics + "_maxProd_sliced.jsimg");
-			}
-			else {
-				b.saveQn(b.getQnName() + semantics + "_maxProd.jsimg");
-			}
-			System.out.println("Max product: " + maxProd);
+			instantiate(b, qn, semantics, false);
 		}
 		if (minProd) {
-			if (attributeName == null) {
-				throw new CmdLineException("You need to specify an attribute name in order to generate a product!");
-			}
-			AttributedProduct minProd = OptProdExp.getProduct(attributeName, true, b.fm);
-			qn.setAttributeName(attributeName);
-			qn.setProductInQN(minProd);
-			if(slice) {
-				QueueNetwork newQn = SimplifyQueueNetworkFromProduct.simplify(qn, minProd);
-				newQn.setProductInQN(minProd);
-				BuildQNfromFM.saveQn(newQn, b.getQnName() + semantics + "_minProd_sliced.jsimg");
-			}
-			else {
-				b.saveQn(b.getQnName() + semantics + "_minProd.jsimg");
-			}
-			System.out.println("Min product: " + minProd);
+			instantiate(b, qn, semantics, true);
 		}
 		if (!minProd && !maxProd) {
 			b.saveQn(b.getQnName() + ".jsimg");
 		}
+	}
+
+	private void instantiate(BuildQNfromFM b, QueueNetwork qn, String semantics, boolean minProd)
+			throws CmdLineException, IOException {
+		if (attributeName == null) {
+			throw new CmdLineException("You need to specify an attribute name in order to generate a product!");
+		}
+		AttributedProduct prod = OptProdExp.getProduct(attributeName, minProd, b.fm);
+		qn.setAttributeName(attributeName);
+		qn.setProductInQN(prod);
+		String minMax = minProd ? "Min" : "Max";
+		if (slice) {
+			QueueNetwork newQn = SimplifyQueueNetwork.simplify(b.getQn(), prod);
+			newQn.setAttributeName(attributeName);
+			newQn.setProductInQN(prod);
+			BuildQNfromFM.saveQn(newQn, b.getQnName() + semantics + "_" + minMax + "Prod_sliced.jsimg");
+		} else {
+			b.saveQn(b.getQnName() + semantics + "_" + minMax + "Prod.jsimg");
+		}
+		System.out.println(minMax + " product: " + prod);
 	}
 }

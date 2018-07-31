@@ -23,7 +23,7 @@ import fmtoqn.Sink;
 import fmtoqn.Source;
 
 public class SimplifyQueueNetwork {
-	private static Logger logger = Logger.getLogger(SimplifyQueueNetwork.class.getSimpleName());
+	public static Logger logger = Logger.getLogger(SimplifyQueueNetwork.class.getSimpleName());
 	private static String attributeName;
 
 	public static QueueNetwork simplifyOnlyQueues(QueueNetwork qn) {
@@ -185,6 +185,7 @@ public class SimplifyQueueNetwork {
 			Queue q = (Queue) element;
 			if (product.containsFeature(q.getName())) {
 				Queue newQueue = new Queue(q.getName(), newFather);
+				newQueue.setCost(q.getCost());
 				newQn.addNode(newQueue);
 				for (QNelement c : q.getChildren()) {
 					QNelement newChild = simplify(c, product, newQueue, newQn, joins);
@@ -195,7 +196,7 @@ public class SimplifyQueueNetwork {
 				if (newQueue.getChildren().size() == 0) {
 					newQueue.addChild(newQn.getSink());
 				}
-				newQueue.setCost(product.getValue(product.getFeatureByName(q.getName()), attributeName));
+				//newQueue.setCost(product.getValue(product.getFeatureByName(q.getName()), attributeName));
 				newElement = newQueue;
 			}
 		} else if (element instanceof Join) {

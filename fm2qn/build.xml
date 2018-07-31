@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project fm2qn">
-    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
-    <!--ANT 1.7 is required                                        -->
+<project default="create_run_jar" name="Create Runnable Jar for Project fm2qn with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR file Export Wizard-->
+    <!--ANT 1.7 is required-->
     <!--define folder properties-->
     <property name="dir.buildfile" value="."/>
     <property name="dir.jarfile" value="${dir.buildfile}"/>
     <target name="create_run_jar">
-        <jar destfile="${dir.jarfile}/FM2QN.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="${dir.jarfile}/FM2QN.jar">
             <manifest>
-                <attribute name="Main-Class" value="fmtoqn.cli.FM2QNcli"/>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="fmtoqn.cli.FM2QNcli"/>
                 <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ ChocoReasoner-1.1.1.jar FaMaFeatureModel-0.9.1.jar FaMaAttributedModel-1.0.4.jar jdom-2.0.6.jar JMT.jar choco-2.1.0-basic+old.jar args4j.jar antlr.jar"/>
             </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
             <fileset dir="${dir.jarfile}/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="../fm2qn.extlibs/ChocoReasoner-1.1.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="../fm2qn.extlibs/FaMaFeatureModel-0.9.1.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="../fm2qn.extlibs/FaMaAttributedModel-1.0.4.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="../fm2qn.extlibs/jdom-2.0.6.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="../fm2qn.extlibs/JMT.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="../fm2qn.extlibs/choco-2.1.0-basic+old.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="../fm2qn.extlibs/args4j.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="../fm2qn.extlibs/antlr.jar"/>
+            <zipfileset dir="../fm2qn.extlibs" includes="ChocoReasoner-1.1.1.jar"/>
+            <zipfileset dir="../fm2qn.extlibs" includes="FaMaFeatureModel-0.9.1.jar"/>
+            <zipfileset dir="../fm2qn.extlibs" includes="FaMaAttributedModel-1.0.4.jar"/>
+            <zipfileset dir="../fm2qn.extlibs" includes="jdom-2.0.6.jar"/>
+            <zipfileset dir="../fm2qn.extlibs" includes="JMT.jar"/>
+            <zipfileset dir="../fm2qn.extlibs" includes="choco-2.1.0-basic+old.jar"/>
+            <zipfileset dir="../fm2qn.extlibs" includes="args4j.jar"/>
+            <zipfileset dir="../fm2qn.extlibs" includes="antlr.jar"/>
         </jar>
     </target>
 </project>

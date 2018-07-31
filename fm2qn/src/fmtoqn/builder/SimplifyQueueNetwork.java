@@ -24,7 +24,6 @@ import fmtoqn.Source;
 
 public class SimplifyQueueNetwork {
 	public static Logger logger = Logger.getLogger(SimplifyQueueNetwork.class.getSimpleName());
-	private static String attributeName;
 
 	public static QueueNetwork simplifyOnlyQueues(QueueNetwork qn) {
 		QueueNetwork newQn = new QueueNetwork();
@@ -86,7 +85,8 @@ public class SimplifyQueueNetwork {
 		Source newSource = newQn.getSource();
 		Sink newSink = newQn.getSink();
 		Map<Join, Join> joins = new HashMap<Join, Join>();
-		for (QNelement c : qn.getSource().getChildren()) {
+		Source oldSource = qn.getSource();
+		for (QNelement c : oldSource.getChildren()) {
 			QNelement newChild = simplify(c, product, newSource, newQn, joins);
 			if (newChild != null) {
 				newSource.addChild(newChild);
@@ -157,11 +157,18 @@ public class SimplifyQueueNetwork {
 		logger.log(Level.INFO, "add " + element.getName());
 		if (element instanceof Router) {
 			Router r = (Router) element;
-			for (QNelement child : r.getChildren()) {
+			List<QNelement> selectedChildren = r.getSelectedChildren();
+			assert selectedChildren.size() == 1;
+			for (QNelement child : selectedChildren) {
 				String childName = child.getName();
 				if (product.containsFeature(childName)) {
+					assert newElement == null: "Only one element should have been selected. \nchildName = " + childName + "\nnewElement = " + newElement.getName();
 					newElement = simplify(child, product, newFather, newQn, joins);
 				}
+			}
+			if(newElement == null) {
+				QNelement c = selectedChildren.get(0);
+				newElement = simplify(c, product, newFather, newQn, joins);
 			}
 		} else if (element instanceof Fork) {
 			Fork fork = (Fork) element;

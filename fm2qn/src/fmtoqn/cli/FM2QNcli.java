@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
@@ -13,6 +15,8 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import es.us.isa.ChocoReasoner.attributed.AttributedProduct;
+import es.us.isa.FAMA.models.FAMAAttributedfeatureModel.AttributedFeature;
+import es.us.isa.FAMA.models.featureModel.extended.GenericAttribute;
 import fmtoqn.QueueNetwork;
 import fmtoqn.builder.BuildQNfromFM;
 import fmtoqn.builder.SimplifyQueueNetwork;
@@ -49,48 +53,64 @@ public class FM2QNcli {
 			if (fileName == null) {
 				throw new CmdLineException(parser, "No feature model is given");
 			}
+			if (!new File(fileName).exists()) {
+				throw new CmdLineException("File " + fileName + " does not exist!");
+			}
+			if (!fileName.endsWith(".afm")) {
+				throw new CmdLineException("Unsopported format of " + fileName + "\nFile extension must be afm");
+			}
+
+			BuildQNfromFM.parSemantics = !seqSem;
+
+			BuildQNfromFM b = new BuildQNfromFM(fileName);
+			b.buildQN();
+			String semantics = (BuildQNfromFM.parSemantics ? "_parSem" : "_seqSem");
+			QueueNetwork qn = b.getQn();
+			String constrFileName = fileName.substring(0, fileName.length() - 4) + semantics + "_constr.txt";
+			qn.printConstraints(new PrintStream(new FileOutputStream(new File(constrFileName))));
+			SimplifyQueueNetwork.logger.setLevel(java.util.logging.Level.SEVERE);
+			if (maxProd) {
+				instantiate(b, qn, semantics, false);
+			}
+			if (minProd) {
+				instantiate(b, qn, semantics, true);
+			}
+			if (!minProd && !maxProd) {
+				b.saveQn(b.getQnName() + ".jsimg");
+			}
 		} catch (CmdLineException e) {
 			System.err.println(e.getMessage());
 			System.err.println("java -jar FM2QN.jar [options...] fileName");
 			parser.printUsage(System.err);
 			System.err.println();
-
 			System.err.println("  Example: java -jar FM2QN.jar " + parser.printExample(ALL));
 			return;
-		}
-
-		BuildQNfromFM.parSemantics = !seqSem;
-
-		if (!new File(fileName).exists()) {
-			throw new CmdLineException("File " + fileName + " does not exist!");
-		}
-
-		if (!fileName.endsWith(".afm")) {
-			throw new CmdLineException("Unsopported format of " + fileName + "\nFile extension must be afm");
-		}
-
-		BuildQNfromFM b = new BuildQNfromFM(fileName);
-		b.buildQN();
-		String semantics = (BuildQNfromFM.parSemantics ? "_parSem" : "_seqSem");
-		QueueNetwork qn = b.getQn();
-		String constrFileName = fileName.substring(0, fileName.length() - 4) + semantics + "_constr.txt";
-		qn.printConstraints(new PrintStream(new FileOutputStream(new File(constrFileName))));
-		SimplifyQueueNetwork.logger.setLevel(java.util.logging.Level.SEVERE);
-		if (maxProd) {
-			instantiate(b, qn, semantics, false);
-		}
-		if (minProd) {
-			instantiate(b, qn, semantics, true);
-		}
-		if (!minProd && !maxProd) {
-			b.saveQn(b.getQnName() + ".jsimg");
 		}
 	}
 
 	private void instantiate(BuildQNfromFM b, QueueNetwork qn, String semantics, boolean minProd)
 			throws CmdLineException, IOException {
 		if (attributeName == null) {
-			throw new CmdLineException("You need to specify an attribute name in order to generate a product!");
+			Set<String> attributes = new HashSet<String>();
+			for (AttributedFeature f : b.fm.getAttributedFeatures()) {
+				for (GenericAttribute a : f.getAttributes()) {
+					attributes.add(a.getName());
+				}
+			}
+			int numAtts = attributes.size();
+			if (numAtts == 1) {
+				attributeName = attributes.iterator().next();
+				System.out.println("Attribute \"" + attributeName
+						+ "\" has been automatically selected for product generation as it is the only attribute of the feature model.");
+			} else {
+				if (numAtts == 0) {
+					throw new CmdLineException(
+							"There are no attributes in the feature model from which to generate a product!");
+				} else {
+					throw new CmdLineException(
+							"You need to specify an attribute name in order to generate a product! There is more than one attribute and I do not know which one to use!");
+				}
+			}
 		}
 		AttributedProduct prod = OptProdExp.getProduct(attributeName, minProd, b.fm);
 		qn.setAttributeName(attributeName);

@@ -1,4 +1,4 @@
-# FM2QN: Feature models to queueing networks
+# FM2QN: Feature Models to Queueing Networks
 
 ## Benchmarks
 A set of 6003 feature models have been generated with the [BeTTy](http://www.isa.us.es/fama/?BeTTy_Framework) tool. The generated benchmark set can be dowloaded from [here](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/benchmarks.zip)

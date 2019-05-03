@@ -92,4 +92,9 @@ public class BuildBasicConstructsParSem {
 	public void buildOptionalAlt() throws Exception {
 		build("optionalAlt");
 	}
+
+	@Test
+	public void buildOptionalMandatorySequence() throws Exception {
+		build("optionalMandatorySequence");
+	}
 }

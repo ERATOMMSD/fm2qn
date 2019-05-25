@@ -29,4 +29,5 @@ The generated queueing networks can be simulated with the [JMT tool](http://jmt.
 ## Contacts
 For any question about the project, please contact the authors:<br/>
 [Paolo Arcaini](http://group-mmm.org/~arcaini/), National Institute of Informatics, Tokyo, Japan<br/>
+[Omar Inverso](http://www.gssi.it/people/post-doc/post-doc-computer-science/item/1018-inverso-omar), Gran Sasso Science Institute, L'Aquila, Italy<br/>
 [Catia Trubiani](http://cs.gssi.infn.it/catia.trubiani/), Gran Sasso Science Institute, L'Aquila, Italy

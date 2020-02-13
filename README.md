@@ -6,8 +6,8 @@
 
 ## Results
 The benchmark feature models have been translated assuming both a parallel and sequential semantics:
-* Queueing networks with parallel semantics: [Synthetic models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_parSem/syntheticModels.zip) - [SPLOT models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_parSem/SPLOTmodels.zip)
-* Queueing networks with sequential semantics: : [Synthetic models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_seqSem/syntheticModels.zip) - [SPLOT models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_seqSem/SPLOTmodels.zip)
+* Queueing networks with parallel semantics: [Synthetic models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_parSem/QNs_parSem_syntheticModels.zip) - [SPLOT models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_parSem/QNs_parSem_SPLOTmodels.zip)
+* Queueing networks with sequential semantics: : [Synthetic models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_seqSem/QNs_seqSem_syntheticModels.zip) - [SPLOT models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_seqSem/QNs_seqSem_SPLOTmodels.zip)
 
 ## Tool
 You can try the tool using the [FM2QN jar file](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn/FM2QN.jar).

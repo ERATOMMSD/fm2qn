@@ -1,12 +1,13 @@
 # FM2QN: Feature Models to Queueing Networks
 
 ## Benchmarks
-A set of 6003 feature models have been generated with the [BeTTy](http://www.isa.us.es/fama/?BeTTy_Framework) tool. The generated benchmark set can be dowloaded from [here](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/benchmarks.zip)
+* A set of 6003 feature models have been generated with the [BeTTy](http://www.isa.us.es/fama/?BeTTy_Framework) tool. The generated benchmark set of synthetic models can be dowloaded from [here](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/benchmarks/syntheticModels.zip).
+* Other 931 feature models have been taken from the [SPLOT repository](http://www.splot-research.org/) and modified with BeTTy in order to add attributes and constraints between attributes. The benchmark set can be dowloaded from [here](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/benchmarks/SPLOTmodels.zip).
 
 ## Results
 The benchmark feature models have been translated assuming both a parallel and sequential semantics:
-* [Queueing networks with parallel semantics](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_parSem.zip)
-* [Queueing networks with sequential semantics](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_seqSem.zip)
+* Queueing networks with parallel semantics: [Synthetic models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_parSem/syntheticModels.zip) - [SPLOT models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_parSem/SPLOTmodels.zip)
+* Queueing networks with sequential semantics: : [Synthetic models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_seqSem/syntheticModels.zip) - [SPLOT models](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn.exps/generatedQNs_seqSem/SPLOTmodels.zip)
 
 ## Tool
 You can try the tool using the [FM2QN jar file](https://github.com/ERATOMMSD/fm2qn/raw/master/fm2qn/FM2QN.jar).

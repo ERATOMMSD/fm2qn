@@ -24,11 +24,13 @@ java -jar FM2QN.jar [options...] fileName
   Example: java -jar FM2QN.jar -attName VAL -max -min -seq
 ```
 
+The products are generated with the FAMA tool (version 1.1.2. Namely, FAMA Core v1.1.1, FaMa Feature Model v0.9.1, FaMa Attributed Feature Model v1.0.4, and ChocoReasoner v1.1.1)
+
 The generated queueing networks can be simulated with the [JMT tool](http://jmt.sourceforge.net/)
 
 
 ## Contacts
 For any question about the project, please contact the authors:<br/>
 [Paolo Arcaini](http://group-mmm.org/~arcaini/), National Institute of Informatics, Tokyo, Japan<br/>
-[Omar Inverso](http://www.gssi.it/people/post-doc/post-doc-computer-science/item/1018-inverso-omar), Gran Sasso Science Institute, L'Aquila, Italy<br/>
+[Omar Inverso](https://www.gssi.it/people/professors/lectures-computer-science/item/1018-inverso-omar), Gran Sasso Science Institute, L'Aquila, Italy<br/>
 [Catia Trubiani](http://cs.gssi.infn.it/catia.trubiani/), Gran Sasso Science Institute, L'Aquila, Italy

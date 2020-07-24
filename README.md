@@ -28,6 +28,9 @@ The products are generated with the [FAMA](https://www.isa.us.es/fama/) tool (ve
 
 The generated queueing networks can be simulated with the [JMT tool](http://jmt.sourceforge.net/)
 
+## Paper
+P. Arcaini, O. Inverso, and C. Trubiani. Automated model-based performance analysis of software product lines under uncertainty. In Information and Software Technology, Volume 127, 2020. [[doi](https://doi.org/10.1016/j.infsof.2020.106371)]
+
 
 ## Contacts
 For any question about the project, please contact the authors:<br/>
